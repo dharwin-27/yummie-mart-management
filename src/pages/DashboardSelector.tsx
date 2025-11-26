@@ -1,6 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
 import { Shield, Package, DollarSign, UserCheck, Headphones, Truck } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import logo from "@/assets/logo.ico";
 
 const dashboards = [
@@ -49,15 +51,28 @@ const dashboards = [
 ];
 
 const DashboardSelector = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  if (!user) {
+    navigate("/auth/login");
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <img src={logo} alt="Mart Logo" className="w-16 h-16" />
-          <div>
-            <h1 className="text-4xl font-bold text-foreground">Mart Dashboards</h1>
-            <p className="text-muted-foreground">Select a dashboard to access</p>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <img src={logo} alt="Mart Logo" className="w-16 h-16" />
+            <div>
+              <h1 className="text-4xl font-bold text-foreground">Mart Dashboards</h1>
+              <p className="text-muted-foreground">Select a dashboard to access</p>
+            </div>
           </div>
+          <Button variant="outline" onClick={signOut}>
+            Sign Out
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
