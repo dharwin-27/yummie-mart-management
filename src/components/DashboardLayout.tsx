@@ -2,7 +2,8 @@ import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Home } from "lucide-react";
+import { Menu, X, Home, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import logo from "@/assets/logo.ico";
 
 interface NavItem {
@@ -20,6 +21,7 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children, title, navItems }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
+  const { signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -77,6 +79,21 @@ const DashboardLayout = ({ children, title, navItems }: DashboardLayoutProps) =>
             </Link>
           ))}
         </nav>
+        
+        {/* Sign Out Button */}
+        <div className="p-2 border-t border-border">
+          <Button
+            variant="ghost"
+            onClick={signOut}
+            className={cn(
+              "w-full justify-start",
+              !sidebarOpen && "justify-center"
+            )}
+          >
+            <LogOut className="w-4 h-4" />
+            {sidebarOpen && <span className="ml-2">Sign Out</span>}
+          </Button>
+        </div>
       </aside>
 
       {/* Main Content */}
